@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.service.BoardCommand;
+import com.service.BoardReplyCommand;
 import com.service.BoardListCommand;
+import com.service.BoardPageCommand;
 
 /**
  * Servlet implementation class BoardFrontController
@@ -47,14 +49,30 @@ public class BoardFrontController extends HttpServlet {
 		BoardCommand command = null;
 		String nextPage = null;
 		//목록보기
+		/* if(com.equals("/list.do")) {
+		command = new BoardListCommand();
+		command.execute(request, response);
+		nextPage = "list.jsp";
+		} */
+		// 페이징 처리
 		if(com.equals("/list.do")) {
-			command = new BoardListCommand();
+			command = new BoardPageCommand();
 			command.execute(request, response);
-			nextPage = "list.jsp";
+			nextPage = "listPage.jsp";
 		}
+		
 		RequestDispatcher dis = request.getRequestDispatcher(nextPage);
 		dis.forward(request, response);
+		//답변글 쓰기
+		if(com.equals("/reply.do")) {
+			command = new BoardReplyCommand();
+			command.execute(request, response);
+			nextPage = "list.do";
+		}
+
 		
 	}
+	
+	
 
 }
